@@ -1,9 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { registerUser } from "../api/authApi";
+import { useToast } from "../context/ToastContext";
 import { signSchema } from "../validations/authValidation";
 
 export const Signup = ()=>{
+
+  const {showToast} = useToast();
 
   const {
     register,
@@ -14,8 +19,21 @@ export const Signup = ()=>{
     // mode: 'onBlur' 
   });
 
+  const mutation = useMutation(registerUser, {
+    onSuccess: (data)=>{
+      console.log("Signup successful.", data);
+      
+    },
+    onError: (error)=>{
+      const message = error.response?.data?.message || 'Signup failed';
+      console.log(message);
+      showToast(message, 'error');
+    }
+  });
+
   const onSignFormSubmit = (data)=>{
     console.log("sigup data:", data);
+    mutation.mutate(data);
   }
 
   return (

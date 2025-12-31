@@ -38,7 +38,4 @@ export const ToastProvider = ({children}) =>{
       </Snackbar>
     </ToastContext.Provider>
   );
-
-
-
 }

@@ -2,10 +2,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { Navigate } from "react-router-dom";
 import { loginUser } from "../api/authApi";
+import { useToast } from "../context/ToastContext";
 import { loginSchema } from "../validations/authValidation";
 
 export const Login = ()=>{
+
+  const {showToast} =  useToast();
 
   const {
     register,
@@ -19,10 +23,12 @@ export const Login = ()=>{
   const mutation = useMutation(loginUser, {
     onSuccess: (data)=>{
       console.log("login successful", data);
+      <Navigate to="/dashboard" />
     },
     onError: (error)=>{
       const message = error.response?.data?.message || 'Login failed';
       console.log("error:", message);
+      showToast(message, 'error');
     }
   });
   
@@ -30,8 +36,6 @@ export const Login = ()=>{
     console.log("data:", data);
     mutation.mutate(data);
   }
-
-
 
   return (
     <Container maxWidth="sm">
