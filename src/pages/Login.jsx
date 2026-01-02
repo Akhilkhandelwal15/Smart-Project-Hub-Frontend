@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/authApi";
 import { useToast } from "../context/ToastContext";
 import { loginSchema } from "../validations/authValidation";
@@ -10,6 +10,7 @@ import { loginSchema } from "../validations/authValidation";
 export const Login = ()=>{
 
   const {showToast} =  useToast();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,7 +24,7 @@ export const Login = ()=>{
   const mutation = useMutation(loginUser, {
     onSuccess: (data)=>{
       console.log("login successful", data);
-      <Navigate to="/dashboard" />
+      navigate("/dashboard");
     },
     onError: (error)=>{
       const message = error.response?.data?.message || 'Login failed';

@@ -1,5 +1,7 @@
+import { ProjectForm } from "../features/project/ProjectForm";
+
 export const Dashboard = ()=>{
   return (
-    <h2>Dashboard</h2>
+    <ProjectForm />
   );
 }
