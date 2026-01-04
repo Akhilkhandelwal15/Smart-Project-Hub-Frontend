@@ -4,6 +4,7 @@ import { Login } from "../pages/Login";
 import { Signup } from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoutes";
+import { ProjectDetail } from "../features/project/ProjectDetail";
 
 const AppRoutes = ()=>{
   return (
@@ -27,6 +28,14 @@ const AppRoutes = ()=>{
         element={
           <PrivateRoute>
             <Dashboard />
+          </PrivateRoute>
+        }
+      />
+
+      <Route path="/projects/:projectId" 
+        element={
+          <PrivateRoute>
+            <ProjectDetail />
           </PrivateRoute>
         }
       />
