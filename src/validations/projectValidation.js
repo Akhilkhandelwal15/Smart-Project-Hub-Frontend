@@ -11,8 +11,9 @@ export const updateProjectSchema = yup.object({
   description: yup.string().max(1000, 'Description must be less than 100 characters.').required('Project description is required'),
   visibility: yup.string().required('Please select project visibility'),
   tags: yup.string(),
-  member: yup.string(),
-  manager: yup.string(),
+  managers: yup.array(),
+  members: yup.array(),
   allowComments: yup.boolean(),
-  allowAttachments: yup.boolean()
+  allowAttachments: yup.boolean(),
+  status: yup.string()
 });

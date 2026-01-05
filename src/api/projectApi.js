@@ -1,4 +1,4 @@
-import api from "./apiInstance"
+import api from "./apiInstance";
 
 export const createProject = async(data)=>{
     const res = await api.post("/project", data);
@@ -15,8 +15,8 @@ export const getProjectById = async(projectId)=>{
     return res.data;
 }
 
-export const updateProject = async(projectId)=>{
-    const res = await api.put(`project/${projectId}`);
+export const updateProject = async(projectId, data)=>{
+    const res = await api.put(`project/${projectId}`, data);
     return res.data;
 }
 
