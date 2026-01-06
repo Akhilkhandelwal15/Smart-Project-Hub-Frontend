@@ -1,9 +1,9 @@
-import { useQuery } from "react-query";
 import { Navigate } from "react-router-dom";
-import { verifyUser } from "../api/authApi";
+import { useAuth } from "../context/AuthContext";
 
 const PublicRoute = ({children})=>{
-  const {data:user, isLoading, isError} = useQuery(["me"], verifyUser);
+  // const {data:user, isLoading, isError} = useQuery(["me"], verifyUser);
+  const { user, isLoading } = useAuth();
 
   if (isLoading) return <div>Loading...</div>;
   if (user) return <Navigate to="/dashboard" replace />;

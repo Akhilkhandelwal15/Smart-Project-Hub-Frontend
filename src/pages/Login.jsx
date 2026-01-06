@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/authApi";
 import { useToast } from "../context/ToastContext";
+import queryClient from "../queryClient";
 import { loginSchema } from "../validations/authValidation";
 
 export const Login = ()=>{
@@ -24,6 +25,7 @@ export const Login = ()=>{
   const mutation = useMutation(loginUser, {
     onSuccess: (data)=>{
       console.log("login successful", data);
+      queryClient.invalidateQueries(["currentUser"]);
       navigate("/dashboard");
     },
     onError: (error)=>{

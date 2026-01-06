@@ -11,6 +11,7 @@ export const loginUser = async(userData)=>{
 }
 
 export const verifyUser = async()=>{
+  console.log("here");
   const res = await api.get("/auth/me");
   return res.data.user;
 }

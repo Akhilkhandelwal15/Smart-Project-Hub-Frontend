@@ -1,3 +1,6 @@
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import {
   Box,
   Button,
@@ -5,18 +8,49 @@ import {
   CardActions,
   CardContent,
   Chip,
+  IconButton,
   Stack,
-  Typography,
-  IconButton
+  Typography
 } from "@mui/material";
-import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useState } from "react";
+import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
+import { deleteProject } from "../../api/projectApi";
+import { useToast } from "../../context/ToastContext";
+import queryClient from "../../queryClient";
+import { ConfirmDialog } from "../common/ConfirmDialog";
 
 export const ProjectCard = ({project}) => {
-const isPublic = project.visibility==="team";
-console.log('project', project);
+  const isPublic = project.visibility==="team";
+  console.log('project', project);
+  const [open, setOpen] = useState(false);
+
+  const openDialog = ()=>{
+    setOpen(true);
+  }
+
+  const {showToast} = useToast();
+
+  const mutation = useMutation((id)=>deleteProject(id), {
+    onSuccess: (data)=>{
+      if(data.success===true){
+        console.log("Project deleted successfully");
+        showToast("Project deleted successfully", "success");
+        queryClient.invalidateQueries("projects");
+      }
+    },
+    onError: (error)=>{
+      const message = error.response?.data?.message || 'Project deletion Failed';
+      console.log("error:", message);
+      showToast(message, 'error');
+    }
+  })
+  
+  const onDelete = (id)=>{
+    console.log(id);
+    mutation.mutate(id);
+  }
+
   return (
     <Card
       sx={{
@@ -82,9 +116,20 @@ console.log('project', project);
           <IconButton size="small" color="primary" component={Link} to={`/projects/${project._id}`}>
             <EditOutlinedIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" color="error">
-            <DeleteOutlineOutlinedIcon fontSize="small" />
+          <IconButton size="small" color="error" onClick={openDialog}>
+            <DeleteOutlineOutlinedIcon fontSize="small"/>
           </IconButton>
+
+          <ConfirmDialog 
+            open={open}
+            title={'Delete Project'}
+            description={`Are you sure you want to delete "${project.name}"? This action cannot be undone.`}
+            confirmText="Delete"
+            cancelText="Cancel"
+            actionColor="error"
+            onClose={()=>setOpen(false)}
+            onConfirm={()=>onDelete(project._id)}
+          />
         </Box>
       </CardActions>
     </Card>
