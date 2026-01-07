@@ -1,10 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { ProjectAuthProvider } from "../context/ProjectAuthContext";
 import { ProjectCreate } from "../features/project/ProjectCreate";
 import { ProjectDetail } from "../features/project/ProjectDetail";
 import { Dashboard } from "../pages/Dashboard";
 import { Login } from "../pages/Login";
 import { Signup } from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
+import { ProjetRoute } from "./ProjectRoute";
 import PublicRoute from "./PublicRoutes";
 
 const AppRoutes = ()=>{
@@ -36,7 +38,11 @@ const AppRoutes = ()=>{
       <Route path="/projects/:projectId" 
         element={
           <PrivateRoute allowedRoles={["user", "admin"]}>
-            <ProjectDetail />
+            <ProjectAuthProvider>
+              <ProjetRoute allowedRoles={["owner", "manager"]}>
+                <ProjectDetail />
+              </ProjetRoute>
+            </ProjectAuthProvider>
           </PrivateRoute>
         }
       />
@@ -44,7 +50,9 @@ const AppRoutes = ()=>{
       <Route path="/project/create" 
         element={
           <PrivateRoute allowedRoles={["user", "admin"]}>
-            <ProjectCreate />
+            <ProjetRoute allowedRoles={["owner", "manager", "member"]}>
+              <ProjectCreate />
+            </ProjetRoute>
           </PrivateRoute>
         }
       />
