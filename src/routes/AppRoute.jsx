@@ -39,7 +39,7 @@ const AppRoutes = ()=>{
         element={
           <PrivateRoute allowedRoles={["user", "admin"]}>
             <ProjectAuthProvider>
-              <ProjetRoute allowedRoles={["owner", "manager"]}>
+              <ProjetRoute permission="canEditProject">
                 <ProjectDetail />
               </ProjetRoute>
             </ProjectAuthProvider>
@@ -50,9 +50,7 @@ const AppRoutes = ()=>{
       <Route path="/project/create" 
         element={
           <PrivateRoute allowedRoles={["user", "admin"]}>
-            <ProjetRoute allowedRoles={["owner", "manager", "member"]}>
               <ProjectCreate />
-            </ProjetRoute>
           </PrivateRoute>
         }
       />

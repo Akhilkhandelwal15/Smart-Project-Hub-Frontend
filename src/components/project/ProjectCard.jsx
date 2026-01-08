@@ -113,12 +113,17 @@ export const ProjectCard = ({project}) => {
         </Button>
 
         <Box>
-          <IconButton size="small" color="primary" component={Link} to={`/projects/${project._id}`}>
-            <EditOutlinedIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" color="error" onClick={openDialog}>
-            <DeleteOutlineOutlinedIcon fontSize="small"/>
-          </IconButton>
+          {project.permissions.canEditProject && (
+            <IconButton size="small" color="primary" component={Link} to={`/projects/${project._id}`}>
+              <EditOutlinedIcon fontSize="small" />
+            </IconButton>
+          )}
+
+          {project.permissions.canDeleteProject && (
+            <IconButton size="small" color="error" onClick={openDialog}>
+              <DeleteOutlineOutlinedIcon fontSize="small"/>
+            </IconButton>
+          )}
 
           <ConfirmDialog 
             open={open}

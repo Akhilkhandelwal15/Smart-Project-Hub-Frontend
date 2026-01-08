@@ -1,5 +1,6 @@
 import { MenuItem, TextField, Typography } from "@mui/material";
 import { Controller, useWatch } from "react-hook-form";
+import { Can } from "../can/Can";
 
 export const ProjectMembers = ({register, errors, control, managersToDisplay, membersToDisplay, owner})=>{
     const selectedManagers = useWatch({control, name:"managers", defaultValue: []});
@@ -19,48 +20,53 @@ export const ProjectMembers = ({register, errors, control, managersToDisplay, me
                 disabled
                 readOnly
             />
-            <Controller
-                name="managers"
-                control={control}
-                defaultValue={[]}
-                render={({field})=>(
-                    <TextField 
-                        select
-                        label="Select managers"
-                        {...field}
-                        slotProps={{
-                            select: {
-                                multiple: true,
-                            },
-                        }}
-                    >
-                        {filteredManagers.map((m)=>(
-                            <MenuItem value={m._id} key={m._id}>{m.email}</MenuItem>
-                        ))}
-                    </TextField>
-                )}
-            />
-            <Controller
-                name="members"
-                control={control}
-                defaultValue={[]}
-                render={({field})=>(
-                    <TextField 
-                        select
-                        label="Select members"
-                        {...field}
-                        slotProps={{
-                            select: {
-                                multiple: true,
-                            },
-                        }}
-                    >
-                        {filteredMembers.map((m)=>(
-                            <MenuItem value={m._id} key={m._id}>{m.email}</MenuItem>
-                        ))}
-                    </TextField>
-                )}
-            />
+            <Can permission="canManageManagers">
+                <Controller
+                    name="managers"
+                    control={control}
+                    defaultValue={[]}
+                    render={({field})=>(
+                        <TextField 
+                            select
+                            label="Select managers"
+                            {...field}
+                            slotProps={{
+                                select: {
+                                    multiple: true,
+                                },
+                            }}
+                        >
+                            {filteredManagers.map((m)=>(
+                                <MenuItem value={m._id} key={m._id}>{m.email}</MenuItem>
+                            ))}
+                        </TextField>
+                    )}
+                />
+            </Can>
+        
+            <Can permission="canManageMembers">
+                <Controller
+                    name="members"
+                    control={control}
+                    defaultValue={[]}
+                    render={({field})=>(
+                        <TextField 
+                            select
+                            label="Select members"
+                            {...field}
+                            slotProps={{
+                                select: {
+                                    multiple: true,
+                                },
+                            }}
+                        >
+                            {filteredMembers.map((m)=>(
+                                <MenuItem value={m._id} key={m._id}>{m.email}</MenuItem>
+                            ))}
+                        </TextField>
+                    )}
+                />
+            </Can>
         </>
     )
 }
