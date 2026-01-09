@@ -24,13 +24,11 @@ export const ProjectDetail = ()=>{
 
     const project = projectData?.success == true ? projectData.project : {}
     const tags = project?.tags?.join(", ");
-    // console.log(project);
 
     const {data: usersData, isLoading:usersLoading, isError:usersError} = useQuery(
         ["getUsers"], getUser
     );
 
-    // console.log("userData:", usersData);
 
     let projectMembers = [];
     let projectManagers = [];
@@ -53,8 +51,6 @@ export const ProjectDetail = ()=>{
         managersToDisplay = usersData.filter((user)=>
             !projectMembers.some((member)=>member._id===user._id) && !projectOwner.some((owner) => owner === user._id)
         );
-
-        // console.log(membersToDisplay, managersToDisplay);
     }
     
         
